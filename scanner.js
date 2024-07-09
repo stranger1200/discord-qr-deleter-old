@@ -39,22 +39,21 @@ async function scanURL(url){
         let buffer = await downloadBuffer(url);
         
         //read it with Jimp
-        Jimp.read(buffer,async function(err,img){
-            if (err){
-                //silent catch errors
-                //console.error(err);
-            }
-            else{
-                //try the tests
-               let test1 = await JSQRScan(img.bitmap.data,img.bitmap.width,img.bitmap.height);
-               if (test1){
-                   resolve(test1);
-               }
-               else{
-                    resolve(QRCodeReaderScan(img.bitmap));
-               }
-            }
-        });
+        Jimp.read(buffer)
+    .then(async img => {
+        // try the tests
+        let test1 = await JSQRScan(img.bitmap.data, img.bitmap.width, img.bitmap.height);
+        if (test1) {
+            resolve(test1);
+        } else {
+            resolve(QRCodeReaderScan(img.bitmap));
+        }
+    })
+    .catch(err => {
+        // silent catch errors
+        // console.error(err);
+        resolve(undefined);
+    });
     });
 }
 exports.scanURL = scanURL;
