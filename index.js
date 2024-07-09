@@ -37,7 +37,7 @@ client.on('message', async function(msg){
             uptimestr = `${d} days ${h} hours ${m} minutes ${s} seconds`;
         }
 
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
         .setTitle(`About ${client.user.username}`)
         .setAuthor(`${client.user.username} | Ravbug Software`, client.user.avatarURL)
         .setColor(msg.member.displayHexColor)
