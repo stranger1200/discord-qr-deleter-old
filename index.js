@@ -15,6 +15,7 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`); 
     client.user.setActivity('for QR Codes | tag me!', { type: 'WATCHING' })
 });
+
 client.on('message', async function(msg){  
     //don't scan dms or self messages
     if (msg.channel.type == "dm" || msg.author.id == client.user.id){
@@ -28,7 +29,7 @@ client.on('message', async function(msg){
         {
             let diff = client.uptime;
             let s = Math.floor(diff / 1000);
-            let  m = Math.floor(s / 60);
+            let m = Math.floor(s / 60);
             s = s % 60;
             let h = Math.floor(m / 60);
             m = m % 60;
@@ -37,35 +38,39 @@ client.on('message', async function(msg){
             uptimestr = `${d} days ${h} hours ${m} minutes ${s} seconds`;
         }
 
+        // Determine whether to use "server" or "servers"
+        const serverCount = client.guilds.cache.size;
+        const serverText = serverCount === 1 ? "server" : "servers";
+
         const embed = new Discord.MessageEmbed()
         .setTitle(`About ${client.user.username}`)
-        .setAuthor(`${client.user.username} | Ravbug Software`, client.user.avatarURL)
+        .setAuthor(`${client.user.username} | Ravbug Software`, client.user.avatarURL())
         .setColor(msg.member.displayHexColor)
         .setDescription("I find QR codes in messages and delete them! You must give me the __Manage Messages__ and __Add Reactions__ permissions so that I can do my job most effectively.")
         .setFooter("© Ravbug, released open source on GitHub.", "https://avatars2.githubusercontent.com/u/22283943")
-        .setThumbnail(client.user.avatarURL)
+        .setThumbnail(client.user.avatarURL())
         .setTimestamp()
         .addField("Hey! You missed one!", "If I miss a QR Code, you can add any reaction to that message and I will check it again. If I believe the message is clean, I will react with ✅")
         .addField("Invite me!", `Use [my invite link](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=10304) to add me to your server! Please give me all of the perms listed on the invite link page.`)
         .addField("My Website", "Visit [My Website](https://qreaper.glitch.me) for information, including instructions for self-hosting me.")
-        .addField("Statistics", `Uptime ${uptimestr}\nProtecting ${client.guilds.size} servers\nPing: ${client.ping}ms`);
+        .addField("Statistics", `Uptime ${uptimestr}\nProtecting ${serverCount} ${serverText}\nPing: ${client.ws.ping}ms`);
         
         msg.channel.send({embed});
     }
 
     let deleted = await processMessage(msg);
-    //if not deleted, observe it for reactions to allow uers
+    //if not deleted, observe it for reactions to allow users
     //to have a message manually scanned
     if (!deleted){
         msg.awaitReactions((reaction, user) => {
             //the reaction filter
             //in this case accept all reactions
             return true;
-        },{max:1,time:300000,errors:[]}).then(async function(collected){
+        }, {max: 1, time: 300000, errors: []}).then(async function(collected){
             let deleted = await processMessage(msg);
             //if message is clean
             if (!deleted && (msg.attachments.array().length > 0 || msg.embeds.length > 0)){
-                msg.react("✅").catch(()=>{});
+                msg.react("✅").catch(() => {});
             }
         });
     }
