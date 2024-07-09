@@ -1,5 +1,6 @@
 # QReaper
 *Note: Discord has partially addressed the issue by adding a warning in the mobile app when you scan a QR code.*
+*Note 2: This uses discord.js Version 12*
 
 Recently, Discord added the ability to scan a QR code with their mobile app to log in. 
 It's convenient, but it has a massive flaw. Attackers have been gaining access to other people's accounts simply by
@@ -30,4 +31,5 @@ They assume you have created an Application and registered a Bot account with Di
 }
 ```
 5. Open a new terminal window at the root folder and run `npm install`
-6. Run `node index.js` to start the bot. It will print to the console the port it's running on. Visit `localhost:port-here` to view the bot's webpage.
+6. Run `npm install discord.js@12` in the same window
+7. Run `node index.js` to start the bot. It will print to the console the port it's running on. Visit `localhost:port-here` to view the bot's webpage.
