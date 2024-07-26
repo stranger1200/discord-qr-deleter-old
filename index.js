@@ -50,13 +50,14 @@ client.on('message', async function(msg){
         
         msg.channel.send({embed});
 
-        const sentMessage = await msg.channel.send(deleteMsg(msg));
+        // ignore this i scuffed stuff
+       /* const sentMessage = await msg.channel.send(deleteMsg(msg));
 
             setTimeout(() => {
 
                 sentMessage.delete().catch(() => {});
 
-            }, 20000); // 20000 milliseconds = 20 seconds
+            }, 20000); // 20000 milliseconds = 20 seconds */
     }
 
     let deleted = await processMessage(msg);
