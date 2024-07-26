@@ -84,7 +84,6 @@ async function processMessage(msg){
         return true;
     }
     if (!removed && msg.embeds.length > 0){
-        console.log(`Deleted a QR code from user: ${msg.author.tag} (ID: ${msg.author.id})`);
         return await processEmbeds(msg);
     }
 }
@@ -125,8 +124,7 @@ async function processEmbeds(msg){
                 sentMessage.delete().catch(() => {});
 
             }, 10000); // 10000 milliseconds = 10 seconds
-
-            msg.delete().catch(() => {});
+            console.log(`Deleted a QR code from user: ${msg.author.tag} (ID: ${msg.author.id})`);
             return true;
         }
     }
