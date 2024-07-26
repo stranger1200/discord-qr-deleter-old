@@ -1,17 +1,16 @@
 {
-  "name": "qreaper",
+  "name": "qrdeleter",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "discord.js": "^11.5.1",
+    "discord.js": "^12.5.3",
     "express": "^4.19.2",
     "jimp": "^0.9.3",
     "jsqr": "^1.2.0",
     "qrcode-reader": "^1.0.4",
     "request": "^2.88.0"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "node index.js"
   },

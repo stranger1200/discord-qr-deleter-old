@@ -20,4 +20,4 @@ If you would like to host this bot yourself, follow these instructions.
 ```
 5. Open a new terminal window at the root folder and run `npm install`
 6. Run `npm install discord.js@12` in the same window
-7. Run `node index.js` to start the bot. It will print to the console the port it's running on. Visit `localhost:port-here` to view the bot's webpage.
+7. Run `node index.js` to start the bot. 

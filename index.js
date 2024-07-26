@@ -1,13 +1,10 @@
-//bot invite link:  https://discordapp.com/oauth2/authorize?client_id=666309507105816586&scope=bot&permissions=10304
-
 //local vs hosted switch
 if (!process.env.hasOwnProperty("TOKEN")){
     process.env = require("./env.json");
 }
 
 const Scanner = require('./scanner.js');
-const Discord = require('discord.js'); 
-require('./server.js')
+const Discord = require('discord.js');
 
 //configure Discord
 const client = new Discord.Client();  
@@ -44,18 +41,22 @@ client.on('message', async function(msg){
 
         const embed = new Discord.MessageEmbed()
         .setTitle(`About ${client.user.username}`)
-        .setAuthor(`${client.user.username} | Ravbug Software`, client.user.avatarURL())
+        .setAuthor(`${client.user.username}`, client.user.avatarURL())
         .setColor(msg.member.displayHexColor)
-        .setDescription("I find QR codes in messages and delete them! You must give me the __Manage Messages__ and __Add Reactions__ permissions so that I can do my job most effectively.")
-        .setFooter("© Ravbug, released open source on GitHub.", "https://avatars2.githubusercontent.com/u/22283943")
+        .setDescription("I find QR codes in messages and delete them! You must give me the __Manage Messages__ permission so that I can do my job most effectively.")
         .setThumbnail(client.user.avatarURL())
         .setTimestamp()
-        .addField("Hey! You missed one!", "If I miss a QR Code, you can add any reaction to that message and I will check it again. If I believe the message is clean, I will react with ✅")
-        .addField("Invite me!", `Use [my invite link](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=10304) to add me to your server! Please give me all of the perms listed on the invite link page.`)
-        .addField("My Website", "Visit [My Website](https://qreaper.glitch.me) for information, including instructions for self-hosting me.")
         .addField("Statistics", `Uptime ${uptimestr}\nProtecting ${serverCount} ${serverText}\nPing: ${client.ws.ping}ms`);
         
         msg.channel.send({embed});
+
+        const sentMessage = await msg.channel.send(deleteMsg(msg));
+
+            setTimeout(() => {
+
+                sentMessage.delete().catch(() => {});
+
+            }, 20000); // 20000 milliseconds = 20 seconds
     }
 
     let deleted = await processMessage(msg);
@@ -83,6 +84,7 @@ async function processMessage(msg){
         return true;
     }
     if (!removed && msg.embeds.length > 0){
+        console.log(`Deleted a QR code from user: ${msg.author.tag} (ID: ${msg.author.id})`);
         return await processEmbeds(msg);
     }
 }
@@ -95,7 +97,14 @@ async function processAttachments(msg){
     for (let attachment of msg.attachments.array()){
         let res = await Scanner.scanURL(attachment.url);
         if (res){
-            msg.channel.send(deleteMsg(msg)).catch(()=>{});
+            const sentMessage = await msg.channel.send(deleteMsg(msg));
+
+            setTimeout(() => {
+
+                sentMessage.delete().catch(() => {});
+
+            }, 10000); // 10000 milliseconds = 10 seconds
+            console.log(`Deleted a QR code from user: ${msg.author.tag} (ID: ${msg.author.id})`);
             return true;
         }
     }
@@ -109,7 +118,15 @@ async function processEmbeds(msg){
     for (let embed of msg.embeds){
         let res = await Scanner.scanURL(embed.url);
         if (res){
-            msg.channel.send(deleteMsg(msg)).catch(()=>{});
+            const sentMessage = await msg.channel.send(deleteMsg(msg));
+
+            setTimeout(() => {
+
+                sentMessage.delete().catch(() => {});
+
+            }, 10000); // 10000 milliseconds = 10 seconds
+
+            msg.delete().catch(() => {});
             return true;
         }
     }
