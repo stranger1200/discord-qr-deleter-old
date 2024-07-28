@@ -7,10 +7,10 @@ const Scanner = require('./scanner.js');
 const Discord = require('discord.js');
 
 //configure Discord
-const client = new Discord.Client();  
+const client = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 client.on('ready', () => {   
     console.log(`Logged in as ${client.user.tag}`); 
-    client.user.setActivity('for QR Codes | tag me!', { type: 'WATCHING' })
+    client.user.setActivity('for QR Codes | tag me!', { type: 'WATCHING' });
 });
 
 client.on('message', async function(msg){  
@@ -48,16 +48,17 @@ client.on('message', async function(msg){
         .setTimestamp()
         .addField("Statistics", `Uptime ${uptimestr}\nProtecting ${serverCount} ${serverText}\nPing: ${client.ws.ping}ms`);
         
-        msg.channel.send({embed});
+        const sentMessage = await msg.channel.send({embed});
 
-        // ignore this i scuffed stuff
-       /* const sentMessage = await msg.channel.send(deleteMsg(msg));
+        // Set a timeout to delete the message after 20 seconds
+        setTimeout(() => {
+            sentMessage.delete().catch(() => {});
+        }, 20000); // 20000 milliseconds = 20 seconds
+    }
 
-            setTimeout(() => {
-
-                sentMessage.delete().catch(() => {});
-
-            }, 20000); // 20000 milliseconds = 20 seconds */
+    // Check if msg.member exists and has MANAGE_MESSAGES permission
+    if (msg.member && msg.member.permissions.has(Discord.Permissions.FLAGS.MANAGE_MESSAGES)) {
+        return;
     }
 
     let deleted = await processMessage(msg);
@@ -100,9 +101,7 @@ async function processAttachments(msg){
             const sentMessage = await msg.channel.send(deleteMsg(msg));
 
             setTimeout(() => {
-
                 sentMessage.delete().catch(() => {});
-
             }, 10000); // 10000 milliseconds = 10 seconds
             console.log(`Deleted a QR code from user: ${msg.author.tag} (ID: ${msg.author.id})`);
             return true;
@@ -121,9 +120,7 @@ async function processEmbeds(msg){
             const sentMessage = await msg.channel.send(deleteMsg(msg));
 
             setTimeout(() => {
-
                 sentMessage.delete().catch(() => {});
-
             }, 10000); // 10000 milliseconds = 10 seconds
             console.log(`Deleted a QR code from user: ${msg.author.tag} (ID: ${msg.author.id})`);
             return true;
