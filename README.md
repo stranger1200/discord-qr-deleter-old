@@ -1,6 +1,9 @@
 # QR Deleter
 *Note: This uses the latest version of discord.js (Version 14 currently)*
 
+## Features
+Deletes QR codes automiatcally from not staff-members of the server (checked by Manage Messages permission). Will log all deletions to bot console.
+
 ## How to Use
 This bot has no settings and begins working as soon as it has been added to a server. It scans all attachments and embedded images.
 
