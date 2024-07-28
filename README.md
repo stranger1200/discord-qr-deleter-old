@@ -1,5 +1,5 @@
 # QR Deleter
-*Note: This uses discord.js Version 12*
+*Note: This uses the latest version of discord.js (Version 14 currently)*
 
 ## How to Use
 This bot has no settings and begins working as soon as it has been added to a server. It scans all attachments and embedded images.
@@ -19,5 +19,4 @@ If you would like to host this bot yourself, follow these instructions.
 }
 ```
 5. Open a new terminal window at the root folder and run `npm install`
-6. Run `npm install discord.js@12` in the same window
-7. Run `node index.js` to start the bot. 
+6. Run `node index.js` to start the bot. 
