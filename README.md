@@ -1,3 +1,5 @@
+# This repository has been archived as I have signifficatly changed the bot and no longer want it to be under a fork. Check out the new repository [here](https://github.com/stranger1200/discord-qr-deleter).
+
 # QR Deleter
 *Note: This uses the latest version of discord.js (Version 14 currently)*
 
